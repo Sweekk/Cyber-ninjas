@@ -15,10 +15,12 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   async function handleLogin(e) {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
     try {
       // 🔐 Firebase Auth login
@@ -28,9 +30,11 @@ export default function LoginPage() {
         password
       );
 
+      if (!user) throw new Error("No user");
+
       // 1️⃣ Get user role
       const userSnap = await getDoc(doc(db, "users", user.uid));
-      const role = userSnap.data().role;
+      const role = userSnap.data()?.role;
 
       // 2️⃣ Normal user → dashboard
       if (role === "user") {
@@ -49,7 +53,10 @@ export default function LoginPage() {
         router.push("/register");
       }
     } catch (err) {
+      console.error(err);
       setError("Invalid email or password");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -59,8 +66,12 @@ export default function LoginPage() {
       return;
     }
 
-    await sendPasswordResetEmail(auth, email);
-    alert("Password reset email sent");
+    try {
+      await sendPasswordResetEmail(auth, email);
+      alert("Password reset email sent");
+    } catch {
+      alert("Failed to send reset email");
+    }
   }
 
   return (
@@ -75,6 +86,7 @@ export default function LoginPage() {
           placeholder="Email"
           className="input"
           required
+          value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
 
@@ -83,6 +95,7 @@ export default function LoginPage() {
           placeholder="Password"
           className="input"
           required
+          value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
 
@@ -90,7 +103,9 @@ export default function LoginPage() {
           Forgot password?
         </p>
 
-        <button className="btn-primary">Login</button>
+        <button className="btn-primary" disabled={loading}>
+          {loading ? "Logging in..." : "Login"}
+        </button>
 
         <p className="text-center">
           Don’t have an account?{" "}
