@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chatbot</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="chat-container">
+        <!-- Header -->
+        <div class="chat-header">
+            <div class="header-left">
+                <div class="bot-avatar">🤖</div>
+                <div class="header-info">
+                    <h1>AI Assistant</h1>
+                    <p>Online</p>
+                </div>
+            </div>
+            <button class="menu-btn">⋮</button>
+        </div>
+
+        <!-- Messages -->
+        <div class="messages-container" id="messagesContainer">
+            <div class="message bot">
+                <div class="message-avatar">🤖</div>
+                <div class="message-content">
+                    <div class="message-bubble">
+                        Hello! I'm your AI assistant. How can I help you today?
+                    </div>
+                    <div class="message-time" id="initialTime"></div>
+                </div>
+            </div>
+
+            <!-- Typing Indicator -->
+            <div class="typing-indicator" id="typingIndicator">
+                <div class="message-avatar">🤖</div>
+                <div class="typing-dots">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input -->
+        <div class="input-container">
+            <div class="input-wrapper">
+                <button class="attach-btn">📎</button>
+                <input 
+                    type="text" 
+                    id="messageInput" 
+                    placeholder="Type a message..."
+                    autocomplete="off"
+                >
+                <button id="sendBtn">➤</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
